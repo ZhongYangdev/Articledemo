@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Articledemo</string>
+    <string name="text_article_list">文章列表</string>
+    <string name="text_add_article">添加文章</string>
+    <string name="text_del_article">删除文章</string>
+    <string name="text_article_des">文章详情</string>
+    <string name="text_upd_article">修改文章</string>
+</resources>
