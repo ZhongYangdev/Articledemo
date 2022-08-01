@@ -1,4 +1,4 @@
-package com.guilong.articledemo.ui.article
+package com.guilong.articledemo.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.guilong.articledemo.logic.AppRepo
 import com.guilong.articledemo.logic.Article
-import com.guilong.articledemo.logic.Repository
+import com.guilong.articledemo.logic.ArticleRepository
 import kotlinx.coroutines.launch
 
 /**
@@ -28,12 +28,12 @@ class OperaArticleViewModel : ViewModel() {
     //未提交文章数据
     val notSubmitLiveData = MutableLiveData<List<Article>>()
 
-    //提交文章数据
-    private val submitLiveData = MutableLiveData<Article>()
+    //文章数据
+    private val articlesLiveData = MutableLiveData<List<Article>>()
 
     //提交文章结果
-    val submitResultLiveData = Transformations.switchMap(submitLiveData) { article ->
-        Repository.addArticle(article)
+    val submitResultLiveData = Transformations.switchMap(articlesLiveData) { article ->
+        ArticleRepository.addArticle(article)
     }
 
     /**
@@ -49,8 +49,8 @@ class OperaArticleViewModel : ViewModel() {
     /**
      * 提交文章数据到服务器
      */
-    fun submitArticle(article: Article) {
-        submitLiveData.value = article
+    fun submitArticle(articles: List<Article>) {
+        articlesLiveData.value = articles
     }
 
     /**

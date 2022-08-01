@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Articledemo"
         tools:targetApi="31">
         <activity
-            android:name=".ui.article.ArticleListActivity"
+            android:name=".ui.ArticleListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,11 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.article.OperaArticleActivity"
+            android:name=".ui.OperaArticleActivity"
             android:exported="true"
             android:label="@string/text_add_article" />
         <activity
-            android:name=".ui.article.ArticleDesActivity"
+            android:name=".ui.ArticleDesActivity"
             android:exported="true"
             android:label="@string/text_article_des" />
     </application>

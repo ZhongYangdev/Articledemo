@@ -1,4 +1,4 @@
-package com.guilong.articledemo.ui.article
+package com.guilong.articledemo.ui
 
 import android.text.TextUtils
 import android.view.LayoutInflater

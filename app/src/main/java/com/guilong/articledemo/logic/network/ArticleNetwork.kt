@@ -7,14 +7,14 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-object Network {
+object ArticleNetwork {
 
-    private val defServices = ServiceCreator.create<DefaultServices>()//接口动态对象
+    private val defServices = ServiceCreator.create<ArticleServices>()//接口动态对象
 
     /**
-     * 获取默认数据
+     * 提交文章数据集合
      */
-    suspend fun getDefaultData() = defServices.getData().await()
+    suspend fun submitArticles() = defServices.submitArticle().await()
 
     /**
      * 简化Retrofit回调

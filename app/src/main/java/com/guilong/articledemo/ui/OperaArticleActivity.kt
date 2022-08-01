@@ -1,6 +1,7 @@
-package com.guilong.articledemo.ui.article
+package com.guilong.articledemo.ui
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +13,15 @@ import com.guilong.articledemo.BaseActivity
 import com.guilong.articledemo.R
 import com.guilong.articledemo.databinding.ActivityOperaArticleBinding
 import com.guilong.articledemo.logic.Article
-import com.guilong.articledemo.ui.LoadingDialog
 
 class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
 
     private var mIsAdd: Boolean = false//当前是否为添加文章
     private var mArticle: Article? = null//当前文章数据，只有修改时才有数据
-    private lateinit var mLoadingDialog: LoadingDialog//加载中对话框
     private val mSubmitList = ArrayList<Article>()//当前待提交数据集合
     private var mSubmitSize = 0//当前已提交数据大小
-
     private var mCurrentArticleId: Long = 0//当前文章ID
+    private lateinit var mProgressDialog: ProgressDialog//加载中对话框
 
     //主页ViewModel
     private val viewModel by lazy {
@@ -64,7 +63,7 @@ class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
             it.setHomeAsUpIndicator(R.mipmap.bar_icon_back)
         }
         /*初始化加载中对话框*/
-        mLoadingDialog = LoadingDialog(this)
+        mProgressDialog = ProgressDialog(this)
     }
 
     override fun initData() {
@@ -113,8 +112,11 @@ class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
                 viewModel.updArticleData(article)
             }
             //显示加载中对话框
-            mLoadingDialog.message = "正在提交数据"
-            mLoadingDialog.show()
+            mProgressDialog.apply {
+                setTitle("提示")
+                setMessage("加载中")
+                show()
+            }
         }
     }
 
@@ -132,10 +134,12 @@ class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
         viewModel.submitResultLiveData.observe(this) { result ->
             val submitArticleId = result.getOrNull()
             if (submitArticleId != null) {
-                //改变当前数据状态
-                viewModel.updArticleStatus(submitArticleId)
-                //当前文章ID数据赋值
-                mCurrentArticleId = submitArticleId
+                for (successId in submitArticleId) {
+                    //改变当前数据状态
+                    viewModel.updArticleStatus(successId)
+                    //当前文章ID数据赋值
+                    mCurrentArticleId = successId
+                }
             } else {
                 Toast.makeText(this, "提交失败", Toast.LENGTH_SHORT).show()
                 backPreLv()
@@ -148,7 +152,7 @@ class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
                 Log.i(TAG, "已提交数据大小 ==> $mSubmitSize 当前数据大小 ==> ${mSubmitList.size}")
                 //等待全部提交完成 返回上一级
                 if (mSubmitSize == mSubmitList.size) {
-                    mLoadingDialog.dismiss()
+                    mProgressDialog.dismiss()
                     backPreLv()
                 }
             }
@@ -165,9 +169,7 @@ class OperaArticleActivity : BaseActivity<ActivityOperaArticleBinding>() {
                 //添加到待提交数据集合
                 mSubmitList.addAll(it)
                 //提交文章数据
-                for (article in mSubmitList) {
-                    viewModel.submitArticle(article)
-                }
+                viewModel.submitArticle(mSubmitList)
             }
         }
     }

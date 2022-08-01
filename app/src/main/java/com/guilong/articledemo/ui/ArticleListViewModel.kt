@@ -1,4 +1,4 @@
-package com.guilong.articledemo.ui.article
+package com.guilong.articledemo.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,11 +1,11 @@
 package com.guilong.articledemo.logic.network
 
-import com.guilong.articledemo.logic.DataResponse
+import com.guilong.articledemo.logic.SubmitResponse
 import retrofit2.Call
 import retrofit2.http.GET
 
-interface DefaultServices {
+interface ArticleServices {
 
     @GET("discovery/categories")
-    fun getData(): Call<DataResponse>
+    fun submitArticle(): Call<SubmitResponse>
 }
